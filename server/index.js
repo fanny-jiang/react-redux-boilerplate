@@ -6,19 +6,18 @@ const bodyParser = require('body-parser')
 const app = express()
 
 app.use(morgan('dev'))
-app.use(express.static(path.join(__dirname, './public')))
+app.use(express.static(path.join(__dirname, '..', 'public')))
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use('/api', require('./api'))
 
-
 // Make sure this is right at the end of your server logic!
 // The only thing after this might be a piece of middleware to serve up 500 errors for server problems
 // (However, if you have middleware to serve up 404s, that go would before this as well)
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'))
+app.use('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public/index.html'))
 })
 
 app.use((err, req, res, next) => {
